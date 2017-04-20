@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- test -->
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title></title>
+
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width">
+<!-- test -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<link rel="stylesheet" href="main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.min.js"></script>
+
+<script src="script.js"></script>
+<!-- test -->
+
+<!-- ********** CSS codes starts*********-->
+<style type="text/css">
+
+/*
+table {
+        width: 100%;
+        height: 350px;
+        overflow-x: scroll;
+       	overflow-y:hide;
+        border: transparent/*4px solid #01B468*/;
+        border-collapse: collapse;
+        border-spacing: 0;
+        display: block;
+}
+tbody {
+        width: 100%;
+        height: 350px;
+        display: inline;
+}
+*/
+
+.container {
+  margin-top:100px;
+  /* border: 3px solid white;*/
+  border-right: 3px solid white;
+  display: inline-block;
+}
+
+
+.expandcollapse-item {
+  overflow: hidden;
+  border-top:none;
+  display:inline-block;
+
+}
+
+.expandcollapse-heading-collapsed {
+  cursor: pointer;
+  padding: 15px 20px;
+  position: relative;
+  z-index: 100000000;
+  color: black; 
+  background-color: transparent;
+  
+}
+
+.expandcollapse-item:first-of-type {
+  border-top:0px;
+}
+
+
+.expandcollapse-heading-collapsed p{
+  font-size: 16px;
+  font-weight: normal;
+  margin:0px;
+}
+
+.expandcollapse-heading-expanded {
+  cursor: pointer;
+  z-index: 100000000;
+  padding: 15px 20px;
+  position: relative;
+  color: black; 
+  background-color: transparent;
+  border: 3px solid white;
+
+}
+
+.expandcollapse-heading-expanded p{
+  font-size: 16px;
+  font-weight: bold;
+  margin:0px;
+}
+
+.expandcollapse-heading-collapsed > span,
+.expandcollapse-heading-expanded > span {
+  position:relative;
+  top: 25px;
+  right: 15px;
+  font-size: 20px;
+  line-height: 0px;
+}
+
+.expand-collapse-content {
+  padding: 20px;
+}
+
+
+/*animation:*/
+
+.slideDown.ng-hide {
+  height:0;
+  transition:height 0.35s ease;
+  overflow:hidden;
+
+}
+
+.slideDown {
+  height: 500px;
+
+  width: 100 % ;
+
+  transition:height 0.35s ease;
+  overflow:hidden;
+  position: absolute; //relative;
+}
+
+.slideDown.ng-hide-remove,
+.slideDown.ng-hide-add {
+  /* remember, the .hg-hide class is added to element
+  when the active class is added causing it to appear
+  as hidden. Therefore set the styling to display=block
+  so that the hide animation is visible */
+
+  display:block!important;
+}
+
+
+.slideDown.ng-hide-add {
+  animation-name: hide;
+  -webkit-animation-name: hide;  
+
+  animation-duration: .5s; 
+  -webkit-animation-duration: .5s;
+
+  animation-timing-function: ease-in;  
+  -webkit-animation-timing-function: ease-in;  
+
+  position:absolute;
+
+}
+
+
+
+.slideDown.ng-hide-remove {
+  animation-name: show;
+  -webkit-animation-name: show;  
+
+  animation-duration: .5s; 
+  -webkit-animation-duration: .5s;
+
+  animation-timing-function: ease-out;  
+  -webkit-animation-timing-function: ease-out;  
+
+  position: absolute;
+
+}
+
+</style> 
+<!--*************CSS ends*******************-->
+</head>
+
+
+<body ng-app="expandCollapseApp">
+
+<!--   <bg1>   remove video background -->
+<bgi>
+<div class="fullscreen-bg">
+    <video loop muted autoplay poster="BG.jpg" class="fullscreen-bg__video">
+        <source src="vBG.webm" type="video/webm">
+        <source src="vBG.mp4" type="video/mp4">
+        <source src="vBG.ogv" type="video/ogv">
+    </video>
+</div>
+<!-- video background -->
+
+<style></style>
+<center><welcome><h0>Welcome to the <SM>SmartMON !</SM></h0>
+<h1>A Device Usage & Tracking System for Ed-Tech Admins</h1></welcome></center>
+
+<br/><br/>
+
+<h0><SM><div style="text-align:right; padding-right: 150px;"> By  TEAM VOLTRON</div></SM></h0>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<br/><br/><br/>
+
+<welcome><div style="font-size:28px;"><center>Please choose the device you interest in &nbsp&nbsp  :)</center></div></welcome>
+<!--  below is orignial 
+<center>
+<table>
+<tr>
+  <td>
+    <a href="PC.html"> 
+    <img src="PC.png" alt=":(" style="width:200px;height:200px;">
+    </a>
+  </td>
+
+  <td style="padding-left: 7cm">
+    <a href="TV.html">
+    <img src="TV.png" alt=":(" style="width:200px;height:200px;">
+    </a>
+  </td>
+
+  <td style="padding-left: 7cm">
+    <a href="Projector.html">
+    <img src="projector.png" alt=":(" style="width:200px;height:200px;">
+    </a>
+  </td>
+</tr></table>
+
+</center>
+          above is original             -->
+<center>
+  <div ng-controller="expandCollapseCtrl">
+    <div class="container">
+
+      <div class="expandcollapse-item">
+        <div ng-click="active = !active" ng-class="{'expandcollapse-heading-collapsed': active, 'expandcollapse-heading-expanded': !active}">
+
+          <!--item here -->
+        <img src="projector.png" alt=":(" style="width:200px;height:200px;">
+          <!--item here -->
+
+        </div>
+
+        <div class="slideDown" ng-hide="active">
+          <div class="expand-collapse-content">
+
+          <!--content here -->
+		<p>test</p>
+          <!--content here -->
+
+          </div>
+        </div>
+      </div>
+
+      <div class="expandcollapse-item">
+        <div ng-click="active1 = !active1" ng-class="{'expandcollapse-heading-collapsed': active1, 'expandcollapse-heading-expanded': !active1}">
+
+          <!--item here -->
+        <img src="PC.png" alt=":(" style="width:200px;height:200px;">
+          <!--item here -->
+
+        </div>
+
+        <div class="slideDown" ng-hide="active1">
+          <div class="expand-collapse-content">
+
+          <!--content here -->
+		<p>test</p>
+          <!--content here -->
+
+          </div>
+        </div>
+      </div>
+
+      <div class="expandcollapse-item">
+        <div ng-click="active2 = !active2" ng-class="{'expandcollapse-heading-collapsed': active2, 'expandcollapse-heading-expanded': !active2}">
+
+          <!--item here -->
+        <img src="TV.png" alt=":(" style="width:200px;height:200px;">
+          <!--item here -->
+        </div>
+
+        <div class="slideDown" ng-hide="active2">
+          <div class="expand-collapse-content">
+	  <!-- ****************************************************  -->
+          <!--content here -->
+	<p>
+	test
+	</p>
+          <!--content here -->
+	  <!-- *****************************************************  -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</center>
+
+<!-- ******************************************************************  -->
+<!-- end of drawing charts and summaries, below are definition of charts -->
+
+<script type="text/javascript">
+/*function makeAvgChart(database, id, name, units) {
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var fullName;
+		if (units == '') {
+			fullName = name;
+		}
+		else {
+			fullName = name + ' (' + units + ')';
+		}
+
+		var data = new google.visualization.DataTable();
+		data.Color = 'white';
+		data.addColumn('number', 'Hours Ago');
+		data.addColumn('number', name);
+		for (var i = 0; i < database.length; i++) {
+			data.addRow(database[i]);
+		}
+
+		var options = {
+			title: 'Average ' + fullName + ' by Hour',
+			titleColor: ['#FFFFFF'],
+                        backgroundColor: 'transparent',
+
+			hAxis: { direction: -1,
+				 ticks: [0,1,2,3,4,5,6,7,8,9,10,11],
+				 title: 'Hours Ago',
+				 titleColor: ['#FFFFFF'],
+				 textStyle: {color: 'white'},
+				 lineWidth: 4 },
+			vAxis: { title: fullName, 
+				 titleColor: ['#FFFFFF'],
+				 textStyle: {color: 'white'},
+				 lineWidth: 4 },
+			legend: { position: 'none', textStyle: {color: 'white'} },
+
+			colors: ['#FF0000'],
+			lineWidth: 5,
+		}
+
+		var chart = new google.visualization.LineChart(document.getElementById(id));
+		chart.draw(data, options);
+	}
+}*/
+
+function makeDefaultPieChart(id, coreTitle, column, daily) {
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var fullTitle, label;
+		if (daily) {
+			fullTitle = coreTitle + ' (TODAY)';
+			label = 'device was OFF for the entire day';
+		}
+		else {
+			fullTitle = coreTitle + ' (Past Week)';
+			label = 'device was OFF for the entire week';
+		}
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', column);
+		data.addColumn('number', 'hours');
+		var labels = [label];
+		data.addRow([label, 1]);
+
+                var options = {
+                        title: fullTitle,
+			titleColor: ['#FFFFFF'],
+                        backgroundColor: 'transparent',
+			legend: {position:'none'},
+			colors: ['gray'],
+			enableInteractivity: false,
+			pieSliceText: 'label',
+                };
+
+		var chart = new google.visualization.PieChart(document.getElementById(id));
+		chart.draw(data, options);
+	}
+}
+
+function makePieChart(database, id, coreTitle, column, chartLabels, daily) {
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var fullTitle;
+		if (daily) {
+			fullTitle = coreTitle + ' (TODAY)';
+		}
+		else {
+			fullTitle = coreTitle + ' (Past Week)';
+		}
+
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', column);
+		data.addColumn('number', 'hours');
+		var labels = chartLabels;
+		for (var i = 0; i < database.length; i++) {
+			data.addRow([labels[i], database[i]]);
+		}
+
+                var options = {
+                        title: fullTitle,
+			titleColor: ['#FFFFFF'],
+                        backgroundColor: 'transparent',
+			legend: {textStyle:{color:'white'} },
+                };
+
+		var chart = new google.visualization.PieChart(document.getElementById(id));
+		chart.draw(data, options);
+	}
+}
+
+function makeDailyChart(database, id, name, units) {
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Day of the Week');
+                data.addColumn('number', name);
+                for (var i = 0; i < database.length; i++) {
+                        data.addRow(database[i]);
+                }
+
+                var options = {
+                        title: name + ' by Day',
+                        titleColor: ['#FFFFFF'],
+
+                        backgroundColor: 'transparent',
+
+                        hAxis: { title: 'Day of the Week', 
+                                 titleColor:['#FFFFFF'],
+                                 textStyle: { color: 'white'} },
+                        vAxis: { title: units, 
+                                 titleColor:['#FFFFFF'],
+                                 textStyle: { color: 'white'} },
+
+                        legend: { position: 'none' },
+
+                        colors: ['#FF0000'],
+                        lineWidth: 8,
+
+                        legend: { textStyle:{color: 'white'} },
+                };
+
+                var chart = new google.visualization.ColumnChart(document.getElementById(id));
+                chart.draw(data, options);
+        }
+}
+
+</script>
+<script>
+var myApp = angular.module('myApp', []);
+</script>
+
+
+<script>
+myApp.controller('myCtrl', function($scope, $http) {
+	$scope.formData = {};
+	/*$http.get('/api/averages')
+	.then(function(response) {
+		var avgCurrentSummationDelivered = [];
+		var avgInstantaneousDemand = [];
+		var avgRmsCurrent = [];
+		var avgVoltage = [];
+		var avgPowerFactor = [];
+		for (var i = 0; i < response.data.length; i++) {
+			avgCurrentSummationDelivered[i] = [response.data[i].hoursAgo, response.data[i].currentSummationDelivered];
+			avgInstantaneousDemand[i] = [response.data[i].hoursAgo, response.data[i].instantaneousDemand];
+			avgRmsCurrent[i] = [response.data[i].hoursAgo, response.data[i].rmsCurrent];
+			avgVoltage[i] = [response.data[i].hoursAgo, response.data[i].voltage];
+			avgPowerFactor[i] = [response.data[i].hoursAgo, response.data[i].powerFactor];
+		}
+
+		makeAvgChart(avgCurrentSummationDelivered, 'avgChart_div1', 'CurrentSummationDelivered', 'kWh');
+		makeAvgChart(avgInstantaneousDemand, 'avgChart_div2', 'InstantaneousDemand', 'W');
+		makeAvgChart(avgRmsCurrent, 'avgChart_div3', 'RmsCurrent', 'A');
+		makeAvgChart(avgVoltage, 'avgChart_div4', 'Voltage', 'V');
+		makeAvgChart(avgPowerFactor, 'avgChart_div5', 'PowerFactor', '');
+	});*/
+	$http.get('/api/daily')
+	.then(function(response) {
+		var daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+		var pieChartLabels = ['Time On', 'Time Off'];
+		var modeChartLabels = ['On (High Load)', 'On (Low Load)', 'Sleep'];
+
+		var lastIndex = response.data.length - 1;
+		var index;
+		var summaryInfo = [0, 0, 0];
+		var dailyTimeOn = [[], [], [], [], [], [], []];
+		var dailyTurnedOn = [[], [], [], [], [], [], []];
+		var weeklyTimeOnOff = [0, 0];
+		var weeklyTimeMode = [0, 0, 0];
+		for (var i = 0; i < 7; i++) {
+			var timeOnOff = [];
+			var timeMode = [];
+			index = lastIndex - i;
+
+			timeOnOff[0] = response.data[index].timeOn;
+			timeOnOff[1] = response.data[index].timeOff;
+			weeklyTimeOnOff[0] += timeOnOff[0];
+			weeklyTimeOnOff[1] += timeOnOff[1];
+
+			timeMode[0] = response.data[index].timeHighLoad;
+			timeMode[1] = response.data[index].timeLowLoad;
+			timeMode[2] = response.data[index].timeSleep;
+			weeklyTimeMode[0] += timeMode[0];
+			weeklyTimeMode[1] += timeMode[1];
+			weeklyTimeMode[2] += timeMode[2];
+
+			if (i == 0) {
+				makePieChart(timeOnOff, 'pieChart_div1', 'ON time vs. OFF time', 'On/Off', pieChartLabels, true);
+				if (timeOnOff[0] == 0) {
+					makeDefaultPieChart('modeChart_div1', 'Time in Each Mode of Operation', 'Mode', true);
+				}
+				else {
+					makePieChart(timeMode, 'modeChart_div1', 'Time in Each Mode of Operation', 'Mode', modeChartLabels, true);
+				}
+			}
+
+			dailyTimeOn[6-i] = [daysOfWeek[response.data[index].weekday], response.data[index].timeOn]; // why the 6-i?
+			dailyTurnedOn[6-i] = [daysOfWeek[response.data[index].weekday], response.data[index].turnedOn];
+		}
+
+		makePieChart(weeklyTimeOnOff, 'pieChart_div2', 'ON time vs. OFF time', 'On/Off', pieChartLabels, false);
+		if (weeklyTimeOnOff[0] == 0) {
+			makeDefaultPieChart('modeChart_div2', 'Time in Each Mode of Operation', 'Mode', false);
+		}
+		else {
+			makePieChart(weeklyTimeMode, 'modeChart_div2', 'Time in Each Mode of Operation', 'Mode', modeChartLabels, false);
+		}
+
+		makeDailyChart(dailyTimeOn, 'dailyChart_div1', 'Time ON', 'Hours');
+		makeDailyChart(dailyTurnedOn, 'dailyChart_div2', 'Times Turned ON', 'Count');
+
+		summaryInfo[2] = 'device was OFF for the entire week';
+		var timeOnDay = 0;
+		for (var i=0; i<7; i++) {
+			summaryInfo[0] += dailyTurnedOn[i][1];
+			if (dailyTimeOn[i][1] > timeOnDay) {
+				if (dailyTimeOn[i][0] == 'Mon') {
+					summaryInfo[2] = 'Monday';
+				}
+				else if (dailyTimeOn[i][0] == 'Tue') {
+					summaryInfo[2] = 'Tuesday';
+				}
+				else if (dailyTimeOn[i][0] == 'Wed') {
+					summaryInfo[2] = 'Wednesday';
+				}
+				else if (dailyTimeOn[i][0] == 'Thu') {
+					summaryInfo[2] = 'Thursday';
+				}
+				else if (dailyTimeOn[i][0] == 'Fri') {
+					summaryInfo[2] = 'Friday';
+				}
+				else if (dailyTimeOn[i][0] == 'Sat') {
+					summaryInfo[2] = 'Saturday';
+				}
+				else if (dailyTimeOn[i][0] == 'Sun') {
+					summaryInfo[2] = 'Sunday';
+				}
+				timeOnDay = dailyTimeOn[i][1];
+			}
+		}
+		summaryInfo[1] = 'High Load';
+		var timeInMode = weeklyTimeMode[0];
+		for (var i=1; i<3; i++) {
+			if (weeklyTimeMode[i] > timeInMode) {
+				if (i == 1) {
+					summaryInfo[1] = 'Low Load';
+				}
+				else if (i == 2) {
+					summaryInfo[1] = 'Sleep';
+				}
+				timeInMode = weeklyTimeMode[i];
+			}
+		}
+		if (timeInMode == 0) {
+			summaryInfo[1] = 'device was OFF for the entire week';
+		}
+
+		var html1 = '<h3><sum><p>Total times turned ON this week:  &nbsp&nbsp<info>'
+		 + summaryInfo[0] +  
+		'</info> </sum></h3></p>'
+
+		var html2 = '<h3><sum><p>Most used mode of operation:  &nbsp&nbsp<info>' 
+		+ summaryInfo[1] + 
+		'</info> </sum></h3></p>'
+
+		var html3 = '<h3><sum><p>Day with most usage:  &nbsp&nbsp<info>' 
+		+ summaryInfo[2] + 
+		'</info> </sum></h3></p>'
+
+		document.getElementById("summary_div").innerHTML = html1 + html2 + html3;
+	});
+});
+</script>
+
+</bgi>
+</body>
+</html>
